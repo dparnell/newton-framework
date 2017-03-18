@@ -89,7 +89,6 @@ UnflattenFile(const char * inFilename)
 	return obj;
 }
 
-#if defined(forNTK)
 /*------------------------------------------------------------------------------
 	Read a data file into a binary object.
 	Args:		inRcvr
@@ -125,7 +124,9 @@ FLoadDataFile(RefArg inRcvr, RefArg inFilename, RefArg inClass)
 	}
 	end_try;
 	return obj;
+
 }
+#if defined(forNTK)
 
 
 /*------------------------------------------------------------------------------

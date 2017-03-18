@@ -640,7 +640,7 @@ FExtractData(RefArg rcvr, RefArg inViews, RefArg inSepStr, RefArg inPrintLength)
 			else if (ISNIL(viewStny)  ||  EQ(viewStny, SYMA(para)))
 				viewText = NILREF;
 			else
-				viewText = RSdataName;
+				viewText = *RSdataName;
 			if (NOTNIL(viewText))
 			{
 				SetArraySlot(viewDescr, viewStrIndex++, viewText);

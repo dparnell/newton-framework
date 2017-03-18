@@ -10,7 +10,7 @@
 #define __DRAWSHAPE_H 1
 
 #include "QDDrawing.h"
-
+#include "Objects.h"
 
 /*------------------------------------------------------------------------------
 	F u n c t i o n   P r o t o t y p e s
