@@ -241,7 +241,7 @@ CTimerQueue::calibrate(void)
 	if (!fTimeoutInProgress)
 	{
 		CTime		now = GetGlobalTime();
-		Timeout	offset = now - fLastCalibrate;
+		Timeout	offset = (Timeout)(now - fLastCalibrate);
 		for (CTimerElement * element = fHead; element != NULL; element = element->fNext)
 		{
 			if (element->fDelta >= offset)

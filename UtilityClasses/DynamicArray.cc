@@ -30,7 +30,7 @@ MoveLow(CDynamicArray * inArray)
 		// empty the block
 		inArray->setArraySize(0);
 		// then reallocate it
-		inArray->setArraySize(elementCount);
+		inArray->setArraySize((ArrayIndex)elementCount);
 		// and copy its contents back
 		memmove(inArray->fArrayBlock, buf, blockSize);
 		FreePtr(buf);

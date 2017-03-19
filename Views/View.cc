@@ -749,7 +749,7 @@ EnableFramesFunctionProfiling(true);
 		CView * targetView = addToSoup(CommandFrameParameter(inCmd));
 		if (targetView)
 		{
-			int targetViewId = CommandParameter(inCmd);
+			int targetViewId = (int)CommandParameter(inCmd);
 			if (targetViewId != 0x08000000)
 				targetView->fId = targetViewId;
 			CommandSetParameter(inCmd, (long)targetView);
@@ -765,7 +765,7 @@ EnableFramesFunctionProfiling(true);
 
 	case aeRemoveData:
 		{
-		CView * targetView = findId(CommandParameter(inCmd));
+		CView * targetView = findId((int)CommandParameter(inCmd));
 		if (targetView)
 		{
 			int targetViewId = targetView->fId;
@@ -878,7 +878,7 @@ EnableFramesFunctionProfiling(true);
 
 	case aeMoveChild:
 		{
-		CView * targetView = findId(CommandParameter(inCmd));
+		CView * targetView = findId((int)CommandParameter(inCmd));
 		if (targetView)
 		{
 			CommandSetId(inCmd, aeMoveData);
@@ -2194,7 +2194,7 @@ CView::syncScrollSoup(RefArg inWhat, RefArg inUpDown)
 CView *
 CView::addToSoup(RefArg inChild)
 {
-	CView *	view;
+	CView *	view = NULL;
 
 	RefVar	args(MakeArray(1));
 	SetArraySlot(args, 0, inChild);

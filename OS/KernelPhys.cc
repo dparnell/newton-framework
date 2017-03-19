@@ -371,7 +371,7 @@ RememberPhysMapping(ULong inDomain, VAddr inVAddr, ObjectId inPageId, bool inCac
 	XTRY
 	{
 		CPhys * page;
-		XFAIL(err = VerifyPhysMappingParams(inDomain, inVAddr, inPageId, 0, 0))
+		XFAIL(err = VerifyPhysMappingParams(inDomain, (ULong)inVAddr, inPageId, 0, 0))
 		GetPhys(inPageId, page);
 		err = PrimRememberPhysMapping(inVAddr, page, 0, 0, inCacheable);
 	}
@@ -563,7 +563,7 @@ ForgetPhysMapping(ULong inDomain, VAddr inArg2, ObjectId inPageId)
 	XTRY
 	{
 		CPhys * page;
-		XFAIL(err = VerifyPhysMappingParams(inDomain, inArg2, inPageId, 0, 0))
+		XFAIL(err = VerifyPhysMappingParams(inDomain, (ULong)inArg2, inPageId, 0, 0))
 		GetPhys(inPageId, page);
 		err = PrimForgetPhysMapping(inArg2, page, 0);
 	}

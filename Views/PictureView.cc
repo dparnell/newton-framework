@@ -117,7 +117,7 @@ CPictureView::drawUsingRect(const Rect * inRect)
 			justify = vjCenterH | vjCenterV;
 		}
 		RefVar transferMode(getProto(SYMA(viewTransferMode)));
-		int mode = ISNIL(transferMode) ? modeCopy : RVALUE(transferMode);
+		int mode = ISNIL(transferMode) ? modeCopy : (int)RVALUE(transferMode);
 		DrawPicture(icon, inRect, justify, mode);
 	}
 }

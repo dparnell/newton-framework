@@ -178,7 +178,7 @@ CRootView::realDoCommand(RefArg inCmd)
 			CView *  theView = addView(CommandFrameParameter(inCmd));
 			int		valu, clipboardLimit = 1;
 			RefVar	rClipboardDepth(GetPreference(SYMA(clipboardDepth)));
-			if (ISINT(rClipboardDepth) && (valu = RVALUE(rClipboardDepth)) > 0)
+			if (ISINT(rClipboardDepth) && (valu = (int)RVALUE(rClipboardDepth)) > 0)
 				clipboardLimit = valu;
 			if (theView->derivedFrom(clClipboard))
 			{
@@ -227,7 +227,7 @@ CRootView::realDoCommand(RefArg inCmd)
 
 	case aeRemoveData:
 		{
-			CView *  theView = findId(CommandParameter(inCmd));
+			CView *  theView = findId((int)CommandParameter(inCmd));
 			if (theView->derivedFrom(clClipboard) || (theView->viewFlags & vNoScripts) != 0)
 			{
 				RefVar	frame(theView->dataFrame());
@@ -786,7 +786,7 @@ CRootView::removeIdler(CView * inView, ULong inId)
 		{
 			CTime delta = idler->fTime - GetGlobalTime();
 			if (delta > CTime(0))	// idler would fire at some point in the future
-				timeToRun = delta;
+				timeToRun = (ULong)delta;
 			fIdlingViews->removeElementsAt(index, 1);
 			unlinkIdleView(inView);
 			break;
@@ -1634,7 +1634,7 @@ CRootView::getClipboard(CView * inIconView)
 {
 	if (NOTNIL(fClipboardIcons) && Length(fClipboardIcons) > 0)
 	{
-		int	index = LSearch(fClipboardIcons, inIconView->fContext, MAKEINT(0), SYMA(_3D), RA(NILREF));	// '=
+		int	index = (int)LSearch(fClipboardIcons, inIconView->fContext, MAKEINT(0), SYMA(_3D), RA(NILREF));	// '=
 		if (index >= 0)
 		{
 			RefVar	clipboard(GetArraySlot(fClipboardViews, index));
@@ -1650,7 +1650,7 @@ CRootView::getClipboardIcon(CClipboardView * inClipboardView)
 {
 	if (NOTNIL(fClipboardViews) && Length(fClipboardViews) > 0)
 	{
-		int	index = LSearch(fClipboardViews, inClipboardView->fContext, MAKEINT(0), SYMA(_3D), RA(NILREF));	// '=
+		int	index = (int)LSearch(fClipboardViews, inClipboardView->fContext, MAKEINT(0), SYMA(_3D), RA(NILREF));	// '=
 		if (index >= 0)
 		{
 			RefVar	clipboardIcon(GetArraySlot(fClipboardIcons, index));

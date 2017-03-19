@@ -130,7 +130,7 @@ AllocateEarlyStuff(void)
 	Ref		sorting = GetProtoVariable(locale, SYMA(sortId));
 	if (NOTNIL(sorting))
 	{
-		int sortId = RINT(sorting);
+		int sortId = (int)RINT(sorting);
 		if (sortId != 0)
 			gSortTables.setDefaultTableId(sortId);
 	}
@@ -434,7 +434,7 @@ CSortingTable::calcSize() const
 void
 CSortingTable::convertTextToLowestSort(UniChar * inText, ArrayIndex inCount) const
 {
-	UniChar				sortedCh;
+//	UniChar				sortedCh;
 	ProjectionEntry * projection;
 
 	while (inCount-- > 0)
@@ -491,7 +491,7 @@ GetIndexSortTable(RefArg indexDesc)
 {
 	RefVar sortId(GetFrameSlot(indexDesc, SYMA(sortId)));
 	if (NOTNIL(sortId))
-		return gSortTables.getSortTable(RINT(sortId), NULL);
+		return gSortTables.getSortTable((int)RINT(sortId), NULL);
 	return NULL;
 }
 
@@ -513,7 +513,7 @@ FSetSortId(RefArg inRcvr, RefArg inId)
 	if (ISNIL(inId))
 		sortId = 0;
 	else if (ISINT(inId))
-		sortId = RINT(inId);
+		sortId = (int)RINT(inId);
 	else
 		return NILREF;
 
@@ -893,7 +893,7 @@ CompareUnicodeText(const UniChar * s1, ArrayIndex len1, const UniChar * s2, Arra
 int
 CompareStringNoCase(const UniChar * s1, const UniChar * s2)
 {
-	return CompareUnicodeText(s1, Ustrlen(s1), s2, Ustrlen(s2));
+	return CompareUnicodeText(s1, (ArrayIndex)Ustrlen(s1), s2, (ArrayIndex)Ustrlen(s2));
 }
 
 
@@ -907,7 +907,7 @@ CompareTextNoCase(const UniChar * s1, ArrayIndex len1, const UniChar * s2, Array
 UniChar *
 FindString(UniChar * inStr, ArrayIndex inLen, UniChar * inStrToFind)
 {
-	ArrayIndex strToFindLen = Ustrlen(inStrToFind);
+	ArrayIndex strToFindLen = (ArrayIndex)Ustrlen(inStrToFind);
 	for (UniChar * s = inStr, * end = inStr + ((int)inLen - (int)strToFindLen); s < end; ++s)
 		if (CompareTextNoCase(s, strToFindLen, inStrToFind, strToFindLen) == 0)
 			return s;
@@ -921,7 +921,7 @@ FindWord(UniChar * inStr, ArrayIndex inLen, UniChar * inWord, bool inWordStart)
 	if (IsDelimiter(*inWord))
 		return FindString(inStr, inLen, inWord);
 
-	ArrayIndex wordLen = Ustrlen(inWord);
+	ArrayIndex wordLen = (ArrayIndex)Ustrlen(inWord);
 	for (UniChar * s = inStr, * end = inStr + ((int)inLen - (int)wordLen); s < end; ++s)
 	{
 		if (IsDelimiter(*s))

@@ -58,8 +58,8 @@ enum
 
 #define kDescriptorTypeMask				 0x03
 #define kDomainMask							(0x0F << kDomainShift)
-#define kPageTableBaseMask					(~0 << kPageTableBaseShift)
-#define kSectionBaseMask					(~0 << kSectionBaseShift)
+#define kPageTableBaseMask					((ULong)~0 << kPageTableBaseShift)
+#define kSectionBaseMask					((ULong)~0 << kSectionBaseShift)
 #define kPageDescriptorAccessMask		(kDomainMask | kUpdateable)
 #define kSectionDescriptorAccessMask	(kDomainMask | kUpdateable | kCacheable | kBufferable)
 #define kSectionPermMask					(0x03 << kSectionPermShift)

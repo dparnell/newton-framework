@@ -419,8 +419,8 @@ FindWordBreaks(const UniChar * inStr, ArrayIndex inStrLen, ULong inOffset, bool 
 	{
 		CDataPtr breakTable(inBreakTable);
 		UByte * breakTablePtr = (UByte *)(char *)breakTable;	// r0
-		const UniChar * wordStart;		// r5
-		const UniChar * wordEnd;		// r10
+		const UniChar * wordStart = NULL;		// r5
+		const UniChar * wordEnd = NULL;		// r10
 		const UniChar * strEnd = inStr + inStrLen;
 		int offset = inOffset;	// r6
 		// if not the leading edge, start with the previous char

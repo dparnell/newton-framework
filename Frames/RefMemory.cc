@@ -47,7 +47,7 @@ ObjHeader *
 ResolveMagicPtr(Ref r)
 {
 	// RVALUE but unsigned, then extract table and index
-	ULong rValue = r >> kRefTagBits;
+	ULong rValue = (ULong)(r >> kRefTagBits);
 	ArrayIndex table = rValue >> kMPTableShift;
 	ArrayIndex index = rValue & kMPIndexMask;
 

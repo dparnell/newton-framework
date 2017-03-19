@@ -519,8 +519,8 @@ CTask::init(TaskProcPtr inProc, size_t inStackSize, ObjectId inTaskId, ObjectId 
 			size_t	bufLen = dataEnd - dataPtr;
 			if (bufLen > sizeof(buf))
 				bufLen = sizeof(buf);
-			XFAIL(err = data.copyFromShared(&amtCopied, buf, bufLen, dataPtr - dataStart))
-			XFAIL(err = sharedGlobalSpace.copyToShared(buf, bufLen, dataPtr - fTaskData))
+			XFAIL(err = data.copyFromShared(&amtCopied, buf, bufLen, (ULong)(dataPtr - dataStart)))
+			XFAIL(err = sharedGlobalSpace.copyToShared(buf, bufLen, (ULong)(dataPtr - fTaskData)))
 		}
 		XFAIL(err)
 

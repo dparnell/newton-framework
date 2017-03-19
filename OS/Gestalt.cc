@@ -211,7 +211,7 @@ ExtendedGestalt(RefArg inGestaltSpec)
 		// first element of spec MUST be int selector
 		Ref selectorRef = GetArraySlot(inGestaltSpec, 0);
 		XFAIL(!ISINT(selectorRef))
-		GestaltSelector selector = RVALUE(selectorRef);
+		GestaltSelector selector = (GestaltSelector)RVALUE(selectorRef);
 		RefVar spec(GetArraySlot(inGestaltSpec, 1));
 		// second element of spec MUST be structure specifier array
 		XFAIL(!IsArray(spec))
@@ -411,14 +411,14 @@ UpdateGestalt(RefArg inSelector, RefArg inArg2, RefArg inArg3, RefArg inArg4, bo
 		XFAIL(!IsArray(inArg3))
 		size_t parmSize;
 		void * parmBlock;
-		XFAIL(err = MarshalArgumentSize(inArg2, inArg3, &parmSize, RINT(inArg4)))
+		XFAIL(err = MarshalArgumentSize(inArg2, inArg3, &parmSize, (int)RINT(inArg4)))
 		if (parmSize > gParmBlockSize)
 			gParmBlockSize = parmSize;
-		XFAIL(err = MarshalArguments(inArg2, inArg3, &parmBlock, RINT(inArg4)))
+		XFAIL(err = MarshalArguments(inArg2, inArg3, &parmBlock, (int)RINT(inArg4)))
 		if (inUpdate)
-			err = gestalt.replaceGestalt(RINT(inSelector), parmBlock, parmSize);
+			err = gestalt.replaceGestalt((GestaltSelector)RINT(inSelector), parmBlock, parmSize);
 		else
-			err = gestalt.registerGestalt(RINT(inSelector), parmBlock, parmSize);
+			err = gestalt.registerGestalt((GestaltSelector)RINT(inSelector), parmBlock, parmSize);
 	}
 	XENDTRY;
 	return MAKEBOOLEAN(err == noErr);

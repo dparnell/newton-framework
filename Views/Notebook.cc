@@ -112,7 +112,7 @@ CNotebook::initToolbox(void)
 
 	Ref	screenOrientation(GetPreference(SYMA(screenOrientation)));
 	if (NOTNIL(screenOrientation))
-		SetOrientation(RINT(screenOrientation));
+		SetOrientation((int)RINT(screenOrientation));
 	else
 	{
 		int	grafOrientation;
@@ -232,20 +232,20 @@ CNotebook::drawSplashScreen(void)
 		str = strBuf;
 		if (licenseeInfo->getText(str))
 		{
-			strLen = Ustrlen(str);
+			strLen = (ULong)Ustrlen(str);
 			txLoc.y = gScreenHeight - 140 - 30;
 			DrawTextOnce(str, strLen, &txStyles, NULL, txLoc, &txOptions, NULL);
 			str += (strLen + 1);
 			if (*str != kEndOfString)
 			{
-				strLen = Ustrlen(str);
+				strLen = (ULong)Ustrlen(str);
 				txLoc.y += 10;
 				DrawTextOnce(str, strLen, &txStyles, NULL, txLoc, &txOptions, NULL);
 
 				str += (strLen + 1);
 				if (*str != kEndOfString)
 				{
-					strLen = Ustrlen(str);
+					strLen = (ULong)Ustrlen(str);
 					txLoc.y += 10;
 					DrawTextOnce(str, strLen, &txStyles, NULL, txLoc, &txOptions, NULL);
 				}

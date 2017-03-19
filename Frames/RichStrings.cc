@@ -126,7 +126,7 @@ CRichString::setUStringData(UniChar * inStr, ArrayIndex inSize)
 void
 CRichString::setUStringData(UniChar * inStr)
 {
-	setUStringData(inStr, (Ustrlen(inStr) + 1) * sizeof(UniChar));
+	setUStringData(inStr, (ArrayIndex)(Ustrlen(inStr) + 1) * sizeof(UniChar));
 }
 
 
@@ -931,7 +931,7 @@ extern int	GetStringFormat(RefArg inStr);
 NewtonErr
 CRichString::verify(void)
 {
-	NewtonErr err;
+	NewtonErr err = 0;
 	const UniChar * strPtr = grabPtr();
 	const UniChar * strEnd = (const UniChar *)((Ptr)strPtr + (fOffsetToInk ? fOffsetToInk : fSize));
 

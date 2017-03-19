@@ -736,7 +736,7 @@ ObjectGetRegister(ObjectMessage * inMsg, size_t inSize, ULong * outResult)
 		XFAIL((task = (CTask *)IdToObj(kTaskType, inMsg->target)) == NULL)
 
 		EnterAtomic();
-		*outResult = task->fRegister[reg];
+		*outResult = (ULong)task->fRegister[reg];
 		ExitAtomic();
 	}
 	XENDTRY;
@@ -759,8 +759,8 @@ GetObjectContent(ObjectMessage * inMsg, size_t inSize, ObjectMessage * outMsg)
 		ULong * p = (ULong *)outMsg;
 		p[2] = task->fPriority;
 		p[3] = task->fName;
-		p[4] = task->fTaskTime;	// longs swapped!
-		p[6] = task->fTaskDataSize;
+		p[4] = (ULong)task->fTaskTime;	// longs swapped!
+		p[6] = (ULong)task->fTaskDataSize;
 		p[7] = task->fHandlesUsed;
 		p[8] = task->fPtrsUsed;
 		p[9] = task->fMemUsed;

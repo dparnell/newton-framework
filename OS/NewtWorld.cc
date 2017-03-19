@@ -324,12 +324,12 @@ HandleRunScriptEvent(CRunScriptEvent * ioEvent)
 			RefVar data;
 			if (ioEvent->fData)
 			{
-				data = AllocateBinary(SYMA(data), ioEvent->fDataSize);
+				data = AllocateBinary(SYMA(data), (ArrayIndex)ioEvent->fDataSize);
 				memmove(BinaryData(data), ioEvent->fData, ioEvent->fDataSize);
 			}
 			RefVar args(MakeArray(1));
 			SetArraySlot(args, 0, data);
-			ioEvent->fResult = RINT(DoMessage(rcvr, msg, args));
+			ioEvent->fResult = (NewtonErr)RINT(DoMessage(rcvr, msg, args));
 		}
 		else
 		{
@@ -342,13 +342,15 @@ HandleRunScriptEvent(CRunScriptEvent * ioEvent)
 	}
 	newton_catch("type.ref.frame")
 	{
-		ioEvent->fError = GetFrameSlot(*(RefStruct *)CurrentException()->data, SYMA(errorCode));
+		ioEvent->fError = (NewtonErr)GetFrameSlot(*(RefStruct *)CurrentException()->data, SYMA(errorCode));
 	}
 	newton_catch_all
 	{
 		ioEvent->fError = (NewtonErr)(long)CurrentException()->data;
 	}
 	end_try;
+    
+    return 0;
 }
 
 
@@ -374,7 +376,7 @@ FSetSysAlarm(RefArg inRcvr, RefArg inTime, RefArg inCallback, RefArg inCallbackA
 	if (NOTNIL(inTime))
 	{
 		CTime timeBase(kSecsSince1904, kSeconds);
-		CTime timeOfAlarm(RINT(inTime), kSeconds);
+		CTime timeOfAlarm((ULong)RINT(inTime), kSeconds);
 		CTime timeAdjustment(GMTOffset() + DaylightSavingsOffset(), kSeconds);
 		CTime finalTime(timeBase + timeOfAlarm - timeAdjustment);
 		gApplication->fAlarm.fEventClass = kNewtEventClass;
@@ -526,7 +528,7 @@ CNewtEventHandler::setWakeupTime(Timeout inDelta)
 		else
 			wait = 1*kMilliseconds;
 //printf("resetIdle(%ld)\n", wait);
-		resetIdle(wait, kMilliseconds);
+		resetIdle((ULong)wait, kMilliseconds);
 	}
 }
 

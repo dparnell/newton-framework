@@ -89,7 +89,7 @@ FDivide(RefArg inRcvr, RefArg a, RefArg b)
 	{
 		if (RVALUE(b) != 0)
 		{
-			div_t result = div(RVALUE(a), RVALUE(b));
+			div_t result = div((int)RVALUE(a), (int)RVALUE(b));
 			if (result.rem == 0)
 				return MAKEINT(result.quot);
 		}
@@ -103,14 +103,14 @@ FDivide(RefArg inRcvr, RefArg a, RefArg b)
 Ref
 FDiv(RefArg inRcvr, RefArg a, RefArg b)
 {
-	return MAKEINT(div(RINT(a), RINT(b)).quot);
+	return MAKEINT(div((int)RINT(a), (int)RINT(b)).quot);
 }
 
 
 Ref
 FMod(RefArg inRcvr, RefArg a, RefArg b)
 {
-	return MAKEINT(div(RINT(a), RINT(b)).rem);
+	return MAKEINT(div((int)RINT(a), (int)RINT(b)).rem);
 }
 
 
@@ -220,7 +220,7 @@ Fabs(RefArg inRcvr, RefArg inArg)
 {
 	if (ISINT(inArg))
 	{
-		int x = RVALUE(inArg);
+		int x = (int)RVALUE(inArg);
 		if (x < 0)
 			x = -x;
 		return MAKEINT(x);
@@ -290,8 +290,8 @@ FReal(RefArg inRcvr, RefArg inArg)
 Ref
 FRandom(RefArg inRcvr, RefArg a, RefArg b)
 {
-	int lo = RINT(a);
-	int hi = RINT(b);
+	int lo = (int)RINT(a);
+	int hi = (int)RINT(b);
 	if (lo > hi)
 		ThrowErr(exFrames, kNSErrBadArgs);
 	return MAKEINT(lo + rand()/(hi-lo+1));
@@ -300,7 +300,7 @@ FRandom(RefArg inRcvr, RefArg a, RefArg b)
 Ref
 FSetRandomSeed(RefArg inRcvr, RefArg inSeed)
 {
-	srand(RINT(inSeed));
+	srand((int)RINT(inSeed));
 	return NILREF;
 }
 
@@ -316,7 +316,7 @@ void get_rand_state(void * ioState) { *(long *)ioState = gRandomState; }
 Ref
 FGetRandomState(RefArg inRcvr)
 {
-	RefVar randomState(AllocateBinary(SYMA(randomState), sizeof_rand_state()));
+	RefVar randomState(AllocateBinary(SYMA(randomState), (ArrayIndex)sizeof_rand_state()));
 	get_rand_state(BinaryData(randomState));
 	return randomState;
 }
@@ -589,7 +589,7 @@ Ref
 Fscalb(RefArg inRcvr, RefArg a, RefArg b)
 {
 	double x = CoerceToDouble(a);
-	int n = RINT(b);
+	int n = (int)RINT(b);
 	return MakeReal(scalbn(x,n));
 }
 
@@ -613,7 +613,7 @@ Fsignum(RefArg inRcvr, RefArg inArg)
 {
 	if (ISINT(inArg))
 	{
-		int x = RVALUE(inArg);
+		int x = (int)RVALUE(inArg);
 		if (x > 0)
 			return MAKEINT(1);
 		else if (x < 0)

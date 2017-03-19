@@ -89,7 +89,7 @@ NewtonErr
 CList::remove(void * inItem)
 {
 	long	index = getIdentityIndex(inItem);
-	return (index == -1) ? kUCErrRangeCheck : removeElementsAt(index, 1);
+	return (index == -1) ? kUCErrRangeCheck : removeElementsAt((ArrayIndex)index, 1);
 }
 
 
@@ -288,7 +288,7 @@ CListLoop::reset(void)
 void *
 CListLoop::current(void)
 {
-	return (fIndex < fSize) ? fList->at(fIndex) : NULL;
+	return (fIndex < fSize) ? fList->at((ArrayIndex)fIndex) : NULL;
 }
 
 
@@ -303,7 +303,7 @@ CListLoop::next(void)
 void
 CListLoop::removeCurrent(void)
 {
-	fList->removeElementsAt(fIndex, 1);
+	fList->removeElementsAt((ArrayIndex)fIndex, 1);
 	--fIndex;
 	--fSize;
 }
@@ -324,7 +324,7 @@ CBackwardLoop::CBackwardLoop(CList * inList)
 void *
 CBackwardLoop::current(void)
 {
-	return (fIndex >= 0) ? fList->at(fIndex) : NULL;
+	return (fIndex >= 0) ? fList->at((ArrayIndex)fIndex) : NULL;
 }
 
 

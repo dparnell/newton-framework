@@ -58,7 +58,7 @@ public:
 	static NewtonErr	alarm(void);
 
 	static bool			checkAlarmsStaySleeping(void);
-	static bool			sleepingCheckFire(void)	{ checkAlarmsStaySleeping(); }
+    static bool			sleepingCheckFire(void)	{ return checkAlarmsStaySleeping(); }
 	static NewtonErr	interruptEntry(void*)	{ return alarm(); }
 	static void			cleanUp(void)				{ alarm(); }
 

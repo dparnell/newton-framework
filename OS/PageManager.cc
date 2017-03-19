@@ -274,7 +274,7 @@ CExtPageTracker::init(CExtPageTracker ** ioTracker, ObjectId inPhysId, PAddr inB
 		// base address and size must be page aligned
 		XFAILIF(PAGEOFFSET(inBase) != 0 || PAGEOFFSET(inSize) != 0, err = kOSErrBadParameters;)
 
-		ArrayIndex  numOfPages = inSize / kPageSize;	// r9
+		ArrayIndex  numOfPages = (ArrayIndex)inSize / kPageSize;	// r9
 		CExtPageTracker * tracker;  // 44 from func
 		XFAILNOT(tracker = (CExtPageTracker *)NewPtr(sizeof(CExtPageTracker) + numOfPages * sizeof(CLittlePhys)), err = kOSErrCouldNotCreateObject;)
 
@@ -633,7 +633,7 @@ CPageManager::registerClient(ObjectId inClientId)
 	ExitAtomic();
 
 	if (err == noErr)
-		fClients.push((void*)inClientId);
+		fClients.push((void*)(size_t)inClientId);
 	return err;
 }
 

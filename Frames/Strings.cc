@@ -74,7 +74,7 @@ bool	IsRichString(RefArg inObj);
 Ref
 MakeStringFromCString(const char * str)
 {
-	RefVar	obj(AllocateBinary(SYMA(string), (strlen(str) + 1) * sizeof(UniChar)));
+	RefVar	obj(AllocateBinary(SYMA(string), (ArrayIndex)(strlen(str) + 1) * sizeof(UniChar)));
 	ConvertToUnicode(str, (UniChar *)BinaryData(obj));
 	return obj;
 }
@@ -89,7 +89,7 @@ MakeStringFromCString(const char * str)
 Ref
 MakeString(const UniChar * str)
 {
-	RefVar	obj(AllocateBinary(SYMA(string), (Ustrlen(str) + 1) * sizeof(UniChar)));
+	RefVar	obj(AllocateBinary(SYMA(string), (ArrayIndex)(Ustrlen(str) + 1) * sizeof(UniChar)));
 	Ustrcpy((UniChar *)BinaryData(obj), str);
 	return obj;
 }
@@ -208,18 +208,18 @@ MakeStringObject(RefArg obj, UniChar * str, ArrayIndex * outLength, ArrayIndex i
 		}
 		else if (ISINT(obj))
 		{
-			IntegerString(RINT(obj), src);
-			length = Ustrlen(src);
+			IntegerString((int)RINT(obj), src);
+			length = (ArrayIndex)Ustrlen(src);
 		}
 		else if (IsReal(obj))
 		{
 			NumberString(CDouble(obj), src, 63, "%.15g");
-			length = Ustrlen(src);
+			length = (ArrayIndex)Ustrlen(src);
 		}
 		else if (EQ(ClassOf(obj), MakeSymbol("symbol")))
 		{
 			ConvertToUnicode(SymbolName(obj), src, 63);
-			length = Ustrlen(src);
+			length = (ArrayIndex)Ustrlen(src);
 		}
 		else
 		{
@@ -648,7 +648,7 @@ StrDowncase(RefArg str)
 
 	LockRef(str);
 	text = (UniChar *)BinaryData(str);
-	LowerCaseText(text, Ustrlen(text));
+	LowerCaseText(text, (ArrayIndex)Ustrlen(text));
 	UnlockRef(str);
 }
 
@@ -832,7 +832,7 @@ StrUpcase(RefArg str)
 
 	LockRef(str);
 	text = (UniChar *)BinaryData(str);
-	UpperCaseText(text, Ustrlen(text));
+	UpperCaseText(text, (ArrayIndex)Ustrlen(text));
 	UnlockRef(str);
 }
 
@@ -977,7 +977,7 @@ FCapitalizeWords(RefArg inRcvr, RefArg ioStr)
 Ref
 FCharPos(RefArg inRcvr, RefArg inStr, RefArg inChar, RefArg inStart)
 {
-	ArrayIndex  pos = CharacterPosition(inStr, RCHAR(inChar), RINT(inStart));
+	ArrayIndex  pos = CharacterPosition(inStr, RCHAR(inChar), (ArrayIndex)RINT(inStart));
 	return (pos == kIndexNotFound) ? NILREF : MAKEINT(pos);
 	
 }
@@ -1060,7 +1060,7 @@ RecurseFindStringInFrame(RefArg inSlot, RefArg ioPath, RefArg outResult, const C
 	else
 	{
 //L108
-		int					pathDepth = inDepth + 1;
+		int					pathDepth = (int)inDepth + 1;
 		CObjectIterator	iter(inSlot);
 		for ( ; !iter.done(); iter.next())
 		{
@@ -1092,7 +1092,7 @@ RecurseFindStringInFrame(RefArg inSlot, RefArg ioPath, RefArg outResult, const C
 								if (inDepth > 0)
 								{
 									path = Clone(ioPath);
-									SetArraySlot(path, inDepth, iter.tag());
+									SetArraySlot(path, (ArrayIndex)inDepth, iter.tag());
 									SetLength(path, pathDepth);
 								}
 								AddArraySlot(outResult, inSlot);
@@ -1114,7 +1114,7 @@ RecurseFindStringInFrame(RefArg inSlot, RefArg ioPath, RefArg outResult, const C
 				Ref	wasFound;
 				// it’s a frame or array, so recurse
 				if (NOTNIL(outResult))
-					SetArraySlot(ioPath, inDepth, iter.tag());
+					SetArraySlot(ioPath, (ArrayIndex)inDepth, iter.tag());
 				wasFound = RecurseFindStringInFrame(iter.value(), ioPath, outResult, inStr, pathDepth);
 				if (NOTNIL(wasFound) && ISNIL(outResult))
 				{
@@ -1217,15 +1217,15 @@ Ref
 FStrMunger(RefArg inRcvr, RefArg s1, RefArg s1start, RefArg s1count,
 								  RefArg s2, RefArg s2start, RefArg s2count)
 {
-	StrMunger(s1, RINT(s1start), NOTNIL(s1count) ? RINT(s1count) : kIndexNotFound,
-				 s2, RINT(s2start), NOTNIL(s2count) ? RINT(s2count) : kIndexNotFound);
+	StrMunger(s1, (ArrayIndex)RINT(s1start), NOTNIL(s1count) ? (ArrayIndex)RINT(s1count) : kIndexNotFound,
+				 s2, (ArrayIndex)RINT(s2start), NOTNIL(s2count) ? (ArrayIndex)RINT(s2count) : kIndexNotFound);
 	return s1;
 }
 
 Ref
 FStrPos(RefArg inRcvr, RefArg inStr, RefArg inSubstr, RefArg inStart)
 {
-	int startPos = RINT(inStart);
+	int startPos = (int)RINT(inStart);
 	if (startPos < 0)
 		startPos = 0;
 	ArrayIndex  pos = StrPosition(inStr, inSubstr, startPos);
@@ -1235,13 +1235,13 @@ FStrPos(RefArg inRcvr, RefArg inStr, RefArg inSubstr, RefArg inStart)
 Ref
 FStrReplace(RefArg inRcvr, RefArg inStr, RefArg inSubstr, RefArg inReplacement, RefArg inCount)
 {
-	return MAKEINT(StrReplace(inStr, inSubstr, inReplacement, NOTNIL(inCount) ? RINT(inCount) : kIndexNotFound));
+	return MAKEINT((ArrayIndex)StrReplace(inStr, inSubstr, inReplacement, NOTNIL(inCount) ? (ArrayIndex)RINT(inCount) : kIndexNotFound));
 }
 
 Ref
 FSubStr(RefArg inRcvr, RefArg inStr, RefArg inStart, RefArg inCount)
 {
-	return Substring(inStr, RINT(inStart), NOTNIL(inCount) ? RINT(inCount) : kIndexNotFound);
+	return Substring(inStr, (ArrayIndex)RINT(inStart), NOTNIL(inCount) ? (ArrayIndex)RINT(inCount) : kIndexNotFound);
 }
 
 Ref
@@ -1312,7 +1312,7 @@ StrHexDump(RefArg inData, RefArg inWidth)
 {
 	CDataPtr data(inData);
 	UChar * srcPtr = (UChar *)(char *)data;
-	ArrayIndex width = NOTNIL(inWidth) ? RINT(inWidth) : 0;
+	ArrayIndex width = NOTNIL(inWidth) ? (ArrayIndex)RINT(inWidth) : 0;
 	ArrayIndex dataLen = Length(inData);
 	ArrayIndex strLen = (dataLen * 2 + 1) * sizeof(UniChar);
 	if (width != 0)

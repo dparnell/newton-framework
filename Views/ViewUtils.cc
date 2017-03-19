@@ -391,7 +391,7 @@ CView *
 BuildView(CView * inView, RefArg inContext)
 {
 	CView * theView;
-	int	vwClass = RINT(GetProtoVariable(inContext, SYMA(viewClass)));
+	int	vwClass = (int)RINT(GetProtoVariable(inContext, SYMA(viewClass)));
 	switch (vwClass)
 	{
 	case clView:
@@ -572,7 +572,7 @@ FExtractData(RefArg rcvr, RefArg inViews, RefArg inSepStr, RefArg inPrintLength)
 
 	ArrayIndex sepStrLen = Length(inSepStr) / sizeof(UniChar) - 1;
 	ArrayIndex strPrtLen = 0;
-	ArrayIndex strMaxLen = RINT(inPrintLength);
+	ArrayIndex strMaxLen = (ArrayIndex)RINT(inPrintLength);
 
 	RefVar viewDescr(MakeArray(numOfViews*2-1));		// view description / separator strings
 	ArrayIndex viewIndex = 0;								// incremented as we process views
@@ -609,7 +609,7 @@ FExtractData(RefArg rcvr, RefArg inViews, RefArg inSepStr, RefArg inPrintLength)
 				{
 					CDataPtr strData(viewText);
 					UniChar * str = (UniChar *)(char *)strData;
-					ArrayIndex strLen = Ustrlen(str);
+					ArrayIndex strLen =(ArrayIndex)Ustrlen(str);
 					ArrayIndex strAvailableLen = MIN(strMaxLen - strPrtLen, strLen);
 					RefVar descr(ExtractRichStringFromParaSlots(GetProtoVariable(thisView, SYMA(text)), GetProtoVariable(thisView, SYMA(styles)), 0, strAvailableLen));
 					SetArraySlot(viewDescr, viewStrIndex++, descr);
@@ -1122,18 +1122,18 @@ FLayoutVerticallyX(RefArg inRcvr, RefArg inChildViews, RefArg inStart)
 {
 	CView *  view = FailGetView(inRcvr);
 	int		viewHt = RectGetHeight(view->viewBounds);
-	int		index = RINT(inStart);
+	int		index = (int)RINT(inStart);
 	int		limit = Length(inChildViews);
 	bool		allCollapsed = NOTNIL(GetProtoVariable(inRcvr, SYMA(allCollapsed)));
 	Ref		collapsedHeight = GetVariable(inRcvr, SYMA(collapsedHeight));
-	int		collapsedHt = NOTNIL(collapsedHeight) ? RINT(collapsedHeight) : 0;
+	int		collapsedHt = NOTNIL(collapsedHeight) ? (int)RINT(collapsedHeight) : 0;
 	RefVar	column(MakeArray(0));
 	RefVar	child;
 	int		ht, childHt;
 	for (ht = 0; ht < viewHt && index < limit; ht += childHt)
 	{
 		child = GetArraySlot(inChildViews, index++);
-		childHt = RINT(GetProtoVariable(child, SYMA(height)));
+		childHt = (int)RINT(GetProtoVariable(child, SYMA(height)));
 		if (allCollapsed || NOTNIL(GetProtoVariable(child, SYMA(collapsed))))
 			childHt = collapsedHt;
 		AddArraySlot(column, child);

@@ -140,8 +140,8 @@ InstallExportTables(RefArg inTable, void * inSource)
 		{
 			strcpy(exportItem->name, name);
 			exportItem->f00 = inSource;
-			exportItem->majorVersion = RINT(GetFrameSlot(item, SYMA(major)));
-			exportItem->minorVersion = RINT(GetFrameSlot(item, SYMA(minor)));
+			exportItem->majorVersion = (int)RINT(GetFrameSlot(item, SYMA(major)));
+			exportItem->minorVersion = (int)RINT(GetFrameSlot(item, SYMA(minor)));
 			exportItem->refCount = 0;
 
 			RefVar objects(GetFrameSlot(item, SYMA(objects)));
@@ -250,7 +250,7 @@ ResolveImportRef(Ref * ioRefPtr, void ** outArg2)
 {
 //r4,r5
 	// we assume the *ioRefPtr IS a magic pointer
-	ULong rValue = *ioRefPtr >> kRefTagBits;		// sp00
+	ULong rValue = (ULong)*ioRefPtr >> kRefTagBits;		// sp00
 	ArrayIndex table = rValue >> kMPTableShift;	// r0
 
 	if (table != 0 && table != 1)

@@ -392,7 +392,7 @@ MonitorDispatchKernelGlue(void)
 {
 	NewtonErr	err;
 	CMonitor *	monitor;
-	if ((err = ConvertIdToObj(kMonitorType, gCurrentTask->fRegister[kMonMonId], &monitor)) == noErr)
+	if ((err = ConvertIdToObj(kMonitorType, (ObjectId)gCurrentTask->fRegister[kMonMonId], &monitor)) == noErr)
 	{
 		gCurrentTask->fState &= ~0x00800000; 
 		monitor->acquire();

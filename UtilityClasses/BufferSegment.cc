@@ -331,7 +331,7 @@ CBufferSegment::seek(long inOffset, int inDirection)
 	}
 	else
 	{
-		Ptr p;
+		Ptr p = NULL;
 
 		if (inDirection == kSeekFromBeginning)
 			p = fLoBound + inOffset;

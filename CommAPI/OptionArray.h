@@ -154,7 +154,7 @@ inline size_t		COption::length() const					{ return fLength; }
 inline void			COption::setOpCode(ULong opCode)		{ fFlags = (fFlags & ~kOpCodeMask) | (opCode & kOpCodeMask); }
 inline void			COption::setOpCodeResult(ULong opCode)	{ fFlags = (fFlags & ~kOpCodeResultMask) | (opCode & kOpCodeResultMask); }
 inline ULong		COption::getOpCode() const				{ return (fFlags & kOpCodeMask); }
-inline ULong		COption::getOpCodeResults() const	{ return ((long) ((SByte)(fFlags & kOpCodeResultMask))); }	// we want the low eight bits to be sign extended before returning as ULong
+inline ULong		COption::getOpCodeResults() const	{ return (ULong)((long) ((SByte)(fFlags & kOpCodeResultMask))); }	// we want the low eight bits to be sign extended before returning as ULong
 inline void			COption::setProcessed()					{ fFlags |= kProcessedFlagMask; }
 
 

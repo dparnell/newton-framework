@@ -75,7 +75,7 @@ private:
 };
 
 inline ULong	CDomainInfo::name(void) const  { return fName; }
-inline ULong	CDomainInfo::base(void) const  { return fBase; }
+inline ULong	CDomainInfo::base(void) const  { return (ULong)fBase; }
 inline size_t	CDomainInfo::size(void) const  { return fSize; }
 
 inline bool		CDomainInfo::hasGlobals(void) const  { return globalSize() != 0; }

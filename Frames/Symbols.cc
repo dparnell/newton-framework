@@ -122,7 +122,7 @@ MakeSymbol(const char * name)
 		// no need to intern it because it’s already in there
 		return GetArraySlot(gSymbolTable, index);
 
-	RefVar	sym(AllocateBinary(kSymbolClass, sizeof(ULong) + strlen(name) + 1));	// symbols are nul-terminated
+	RefVar	sym(AllocateBinary(kSymbolClass, sizeof(ULong) + (ArrayIndex)strlen(name) + 1));	// symbols are nul-terminated
 	*(ULong *)BinaryData(sym) = hash;
 	strcpy((char *)SymbolName(sym), name);
 

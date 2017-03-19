@@ -62,7 +62,7 @@ SimpleRenderCallback(void * inRefCon,
 	CodecBlock *	codecParms = (CodecBlock *)inRefCon;
 
 	unsigned		amtReqd = ioData->mBuffers[0].mDataByteSize;
-	unsigned		amtDone = MIN(amtReqd, codecParms->dataSize - codecParms->x00);
+	unsigned		amtDone = (unsigned)MIN(amtReqd, codecParms->dataSize - (unsigned)codecParms->x00);
 
 	memcpy(ioData->mBuffers[0].mData, (char *)codecParms->data + codecParms->x00, amtDone);
 	if (amtDone < amtReqd)

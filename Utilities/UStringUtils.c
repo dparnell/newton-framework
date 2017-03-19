@@ -297,7 +297,7 @@ IsPunctSymbol(UniChar * inStr, int inOffset)	// 00256524
 void
 StripPunctSymbols(UniChar * inStr)
 {
-	int i = 0, limit = Ustrlen(inStr);
+	int i = 0, limit = (int)Ustrlen(inStr);
 
 	// strip from the beginning
 	for ( ; i < limit && IsPunctSymbol(inStr, i); )
@@ -306,7 +306,7 @@ StripPunctSymbols(UniChar * inStr)
 		memmove(inStr, inStr + i, (limit - (i - 1)) * sizeof(UniChar));
 
 	// strip from the end
-	i = Ustrlen(inStr) - 1;
+	i = (int)Ustrlen(inStr) - 1;
 	while (i >= 0 && IsPunctSymbol(inStr, i))
 		inStr[i--] = kEndOfString;
 }

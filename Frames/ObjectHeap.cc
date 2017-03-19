@@ -327,10 +327,10 @@ Length(Ref obj)
 	{
 		gCached.lenRef = INVALIDPTRREF;
 		IndirectBinaryObject * vbo = (IndirectBinaryObject *)p;
-		return vbo->procs->GetLength(vbo->data);
+		return (ArrayIndex)vbo->procs->GetLength(vbo->data);
 	}
 	else
-		len = BINARYLENGTH(p);
+		len = (ArrayIndex)BINARYLENGTH(p);
 
 	gCached.length = len;
 	return len;
@@ -614,15 +614,15 @@ BinaryMunger(RefArg a1, ArrayIndex a1start, ArrayIndex a1count,
 Ref
 FMakeBinary(RefArg inRcvr, RefArg inSize, RefArg inClass)
 {
-	return AllocateBinary(inClass, RINT(inSize));
+	return AllocateBinary(inClass, (ArrayIndex)RINT(inSize));
 }
 
 Ref
 FBinaryMunger(RefArg inRcvr, RefArg a1, RefArg a1start, RefArg a1count,
 									  RefArg a2, RefArg a2start, RefArg a2count)
 {
-	BinaryMunger(a1, RINT(a1start), NOTNIL(a1count) ? RINT(a1count) : kIndexNotFound,
-					 a2, RINT(a2start), NOTNIL(a2count) ? RINT(a2count) : kIndexNotFound);
+	BinaryMunger(a1, (ArrayIndex)RINT(a1start), NOTNIL(a1count) ? (ArrayIndex)RINT(a1count) : kIndexNotFound,
+					 a2, (ArrayIndex)RINT(a2start), NOTNIL(a2count) ? (ArrayIndex)RINT(a2count) : kIndexNotFound);
 	return a1;
 }
 
@@ -750,7 +750,7 @@ RemoveGCRoot(Ref * inRoot)
 	{
 		size_t prevSize = GetPtrSize((Ptr)gGC.roots);
 		Ref ** rp = gGC.roots;
-		for (ArrayIndex i = 0, count = prevSize/sizeof(Ref*); i < count; ++i, ++rp)
+		for (ArrayIndex i = 0, count = (ArrayIndex)prevSize/sizeof(Ref*); i < count; ++i, ++rp)
 		{
 			if (*rp == inRoot)
 			{
@@ -1200,7 +1200,7 @@ void
 CObjectHeap::disposeRefHandle(RefHandle * inRefHandle)
 {
 	if (inRefHandle != NULL) {	// original doesn’t check
-		ArrayIndex x = refHIndex;
+		int x = refHIndex;
 if (refHIndex > NUMOFREFHANDLES) {
 	printf("\nCObjectHeap::disposeRefHandle() refHIndex=%ud\n", refHIndex);
 }
@@ -1209,7 +1209,7 @@ if (refHIndex > NUMOFREFHANDLES) {
 		}
 		inRefHandle->ref = MAKEINT(x);
 		inRefHandle->stackPos = MAKEINT(kIndexNotFound);
-		refHIndex = inRefHandle - refHBlock->data;
+		refHIndex = (ArrayIndex)(inRefHandle - refHBlock->data);
 if (refHIndex > NUMOFREFHANDLES) {
 	printf("\nCObjectHeap::disposeRefHandle() refHIndex=%ud\n", refHIndex);
 }
@@ -1233,7 +1233,7 @@ printf("CObjectHeap::expandObjectTable(#%p)\n", inRefHandle);
 	// if size hasn't changed then there wasn't enough memory
 	if ((refHBlock->size - originalSize) / sizeof(RefHandle) == 0)
 	{
-		refHIndex = - (long)(&refHBlock->data[0]) / sizeof(RefHandle);	// sic -- but pointless since we WILL crash hard
+		// refHIndex = - (long)(&refHBlock->data[0]) / sizeof(RefHandle);	// sic -- but pointless since we WILL crash hard
 		OutOfMemory();
 	}
 	return inRefHandle;
@@ -1252,7 +1252,7 @@ CObjectHeap::clearRefHandles(void)
 	ArrayIndex currentStackPos = gCurrentStackPos & 0xFFFF;
 	RefHandle * rhp = refHBlock->data;
 	for (ArrayIndex i = 0; i < count - 1; ++i, ++rhp) {	// last RefHandle is reserved
-		ArrayIndex x = RVALUE(rhp->stackPos);
+		ArrayIndex x = (ArrayIndex)RVALUE(rhp->stackPos);
 		if (x != 0 && (x >> 16) == currentInterpreter && (x & 0xFFFF) > currentStackPos) {
 			DisposeRefHandle(rhp);
 		}

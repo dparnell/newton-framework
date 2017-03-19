@@ -526,10 +526,10 @@ PixelMapBits(const PixelMap * inPixmap)
 		return (Ptr)inPixmap + inPixmap->baseAddr;
 	} else if (storage == kPixMapHandle) {
 printf("PixelMapBits() using baseAddr as Handle!\n");
-		return *(Handle)inPixmap->baseAddr;
+		return *(Handle)(size_t)inPixmap->baseAddr;
 	} else if (storage == kPixMapPtr) {
 printf("PixelMapBits() using baseAddr as Ptr!\n");
-		return (Ptr)inPixmap->baseAddr;
+		return (Ptr)(size_t)inPixmap->baseAddr;
 	}
 	return NULL;
 }

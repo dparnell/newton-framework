@@ -92,7 +92,7 @@ ScanForREx(SGlobalsThatLiveAcrossReboot *	info, PAddr inAddr)
 
 	while ((rex = TestForREx(p)) != NULL)
 	{
-		info->fRExPtr[rex->id] = (RExHeader *)rex->start;
+		info->fRExPtr[rex->id] = (RExHeader *)(size_t)rex->start;
 		info->fPhysRExPtr[rex->id] = (RExHeader *)p;
 		info->fRExSize[rex->id] = rex->length;
 		p += rex->length;

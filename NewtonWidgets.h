@@ -131,6 +131,9 @@ void ByteSwap(void * p, int count, int swapSize);
 //	SUBPAGEALIGN(amount)
 
 #define TRUNC(N,B)			(((long)(N)) & ~((long)(B)-1L))
+#ifdef ALIGN
+#undef ALIGN
+#endif
 #define ALIGN(N,B)			((((long)(N))+(long)(B)-1)&~((long)(B)-1L))
 #define WORDALIGN(n)			ALIGN((n),2L)
 #define LONGALIGN(n)			ALIGN((n),4L)

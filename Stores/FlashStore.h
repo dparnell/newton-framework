@@ -237,12 +237,12 @@ private:
 };
 
 
-inline ULong			CFlashStore::offsetToLogs(void) const { return fBlockSize - (fIsSRAM ? 256 : 1024); }
+inline ULong			CFlashStore::offsetToLogs(void) const { return (ULong)fBlockSize - (fIsSRAM ? 256 : 1024); }
 
 inline size_t			CFlashStore::bucketSize(void) const { return fBucketSize; }
 inline size_t			CFlashStore::bucketCount(void) const { return fBucketCount; }
 
-inline PSSId			CFlashStore::PSSIdFor(ArrayIndex inBlockNo, long inBlockOffset) const { return (inBlockNo << f60) | inBlockOffset; }
+inline PSSId			CFlashStore::PSSIdFor(ArrayIndex inBlockNo, long inBlockOffset) const { return (inBlockNo << f60) | (PSSId)inBlockOffset; }
 inline ArrayIndex		CFlashStore::objectNumberFor(PSSId inId) const { return inId & ~(0x0FFFFFFF << f60); }
 inline ArrayIndex		CFlashStore::blockNumberFor(PSSId inId) const { return inId >> f60; }
 inline CFlashBlock *	CFlashStore::blockFor(PSSId inId) const { return fBlock[inId >> f60]; }

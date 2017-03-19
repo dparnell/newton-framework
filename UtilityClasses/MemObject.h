@@ -131,7 +131,7 @@ private:
 
 inline bool		CMemObject::isInternal(void)	{ return fFlags.internal; }
 inline bool		CMemObject::isShared(void)		{ return fFlags.shared; }
-inline ULong	CMemObject::getSize(void)		{ return fSize; }
+inline ULong	CMemObject::getSize(void)		{ return (ULong)fSize; }
 
 
 #endif	/* __MEMOBJECT_H */

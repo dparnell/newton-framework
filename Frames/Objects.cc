@@ -89,7 +89,7 @@ int	_RCHARError(Ref r) { ThrowBadTypeWithFrameData(kNSErrNotACharacter, r); retu
 
 Ref		AddressToRef(void * inAddr) { return (Ref) inAddr & kRefValueMask; }
 void *	RefToAddress(Ref r) { return (void *)(ISINT(r) ? r & kRefValueMask : _RINTError(r)); }
-int		RefToInt(Ref r) { return RINT(r); }
+int		RefToInt(Ref r) { return (int)RINT(r); }
 UniChar	RefToUniChar(Ref r) { return RCHAR(r); }
 
 #pragma mark -
@@ -432,7 +432,7 @@ int
 CoerceToInt(Ref r)
 {
 	if (ISINT(r))
-		return RVALUE(r);
+		return (int)RVALUE(r);
 
 	if (IsReal(r))
 		return (int) *(double *)BinaryData(r);
@@ -475,7 +475,7 @@ CDouble(Ref r)
 Ref
 ToObject(RefArg inClass, const char * inData, size_t inSize)
 {
-	RefVar theObject(AllocateBinary(inClass, inSize));
+	RefVar theObject(AllocateBinary(inClass, (ArrayIndex)inSize));
 	CDataPtr objData(theObject);
 	memcpy((char *)objData, inData, inSize);
 	return theObject;

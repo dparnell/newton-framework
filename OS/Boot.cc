@@ -288,7 +288,7 @@ SetRebootReason(long inReason)
 
 	SGlobalsThatLiveAcrossReboot *	pGlobals;
 	pGlobals = MakeGlobalsPtr(g0F001800);
-	pGlobals->fRebootReason = inReason;
+	pGlobals->fRebootReason = (NewtonErr)inReason;
 	pGlobals->fMagicNumber = kRebootMagicNumber;
 }
 
@@ -729,7 +729,7 @@ L20	LDR	R0, [g0F183C00]
 	size_t			ramBank2Size = 0;
 	SGlobalsThatLiveAcrossReboot *	pGlobals = MemoryTest(ramBank1Size, ramBank2Size);
 	SBankInfo *		bankInfo = pGlobals->fBank;
-	KernelArea *	bootInfo = (KernelArea *)GetSuperStacksPhysBase(ramBank1Size);
+	KernelArea *	bootInfo = (KernelArea *)GetSuperStacksPhysBase((ULong)ramBank1Size);
 	bootInfo->ptr = bankInfo;
 	bootInfo->num = 23;
 	CopyRAMTableToKernelArea(bootInfo);

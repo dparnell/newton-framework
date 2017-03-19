@@ -156,13 +156,13 @@ public:
 	NewtonErr	send(void * inContent, size_t inSize, Timeout inTimeout = kNoTimeout, ULong inMsgType = 0, bool inUrgent = false)
 							{ return sendGoo(kBuiltInSMemMsgId, 0, inContent, inSize, inMsgType, 0, inUrgent, inTimeout, 0); }
 	NewtonErr	sendRPC(size_t * outSize, void * inContent, size_t inSize, void * ioReplyBuf, size_t inReplySize, Timeout inTimeout = kNoTimeout, ULong inMsgType = 0, bool inUrgent = false)
-							{ return sendRPCGoo(kBuiltInSMemMsgId, kBuiltInSMemId, outSize, inContent, inSize, inMsgType, 0, inUrgent, ioReplyBuf, inReplySize, inTimeout, NULL); }
+							{ return sendRPCGoo(kBuiltInSMemMsgId, kBuiltInSMemId, outSize, inContent, inSize, inMsgType, 0, inUrgent, ioReplyBuf, (ULong)inReplySize, inTimeout, NULL); }
 
 				// async versions of send...
 	NewtonErr	send(CUAsyncMessage * inAsync, void * inContent, size_t inSize, Timeout inTimeout = kNoTimeout, CTime * inFutureTimeToSend = NULL, ULong inMsgType = 0, bool inUrgent = false)
 							{ return sendGoo(inAsync->getMsgId(), 0, inContent, inSize, inMsgType, kPortFlags_Async, inUrgent, inTimeout, inFutureTimeToSend); }
 	NewtonErr	sendRPC(CUAsyncMessage* async, void * inContent, size_t inSize, void * ioReplyBuf, size_t inReplySize, Timeout inTimeout = kNoTimeout, CTime * inFutureTimeToSend = NULL, ULong inMsgType = 0, bool inUrgent = false)
-							{ return sendRPCGoo(async->getMsgId(), async->getReplyMemId(), NULL, inContent, inSize, inMsgType, kPortFlags_Async, inUrgent, ioReplyBuf, inReplySize, inTimeout, inFutureTimeToSend); }
+							{ return sendRPCGoo(async->getMsgId(), async->getReplyMemId(), NULL, inContent, inSize, inMsgType, kPortFlags_Async, inUrgent, ioReplyBuf, (ULong)inReplySize, inTimeout, inFutureTimeToSend); }
 
 	NewtonErr	receive(size_t * outSize, void * inContent, size_t inSize, CUMsgToken * inToken = NULL, ULong * outMsgType = NULL, Timeout inTimeout = kNoTimeout, ULong inMsgFilter = kMsgType_MatchAll, bool onMsgAvail = false, bool tokenOnly = false);
 	NewtonErr	receive(CUAsyncMessage * inAsync, Timeout inTimeout = kNoTimeout, ULong inMsgFilter = kMsgType_MatchAll, bool onMsgAvail = false);

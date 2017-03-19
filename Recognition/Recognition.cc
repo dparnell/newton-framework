@@ -111,7 +111,7 @@ ULong
 GetTicks(void)
 {
 	CTime now(GetGlobalTime());
-	return now / (20*kMilliseconds);
+	return (ULong)now / (20*kMilliseconds);
 }
 
 
@@ -202,7 +202,7 @@ UpdateStroke(CStrokeUnit * inStrokeUnit, FRect * inBox)
 {
 	FRect unitBounds;
 	inStrokeUnit->getBBox(&unitBounds);
-	int penSize = RINT(GetPreference(SYMA(userPenSize)));
+	int penSize = (int)RINT(GetPreference(SYMA(userPenSize)));
 	InsetRectangle(&unitBounds, -penSize, -penSize);
 	if (!inStrokeUnit->getStroke()->testFlags(0x08000000)
 	||  SectRectangle(&unitBounds, inBox, &unitBounds))
@@ -522,8 +522,8 @@ HandleGetContextUnits(CRecUnit * inUnit, long inArg2)
 		if (view)
 		{
 			RefVar cmd(MakeCommand(aeGetContext, view, (long)&unit));
-			CommandSetIndexParameter(cmd, 0, inArg2);
-			contextUnits = (CRecUnitList *)gApplication->dispatchCommand(cmd);
+			CommandSetIndexParameter(cmd, 0, (int)inArg2);
+			contextUnits = (CRecUnitList *)(size_t)gApplication->dispatchCommand(cmd);
 		}
 	}
 	newton_catch(exRootException)
@@ -986,7 +986,7 @@ CRecognitionManager::update(Rect * inRect)
 	FixRect(&updateBounds, inRect);
 	if (fCapability >= 1)
 	{
-		int penSize = RINT(GetPreference(SYMA(userPenSize)));
+		int penSize = (int)RINT(GetPreference(SYMA(userPenSize)));
 		SetLineWidth(penSize);	// was PenSize(penSize, penSize);
 		FRect	inkBounds = updateBounds;
 		fController->updateInk(&inkBounds);
@@ -1266,8 +1266,8 @@ ExpireUsingCommand(CUnit ** inGroup)
 		if (gRecMemErrCount > 0  &&  (gRecInkNotifyFlags & 0x01) != 0)
 		{
 			Ref lastWarningRef = GetPreference(SYMA(lastRecMemWarning));
-			ULong lastWarning = ISINT(lastWarningRef) ? RVALUE(lastWarningRef) : 0;
-			ULong today = RealClock() / (60 * 24);		// minutes -> days
+			ULong lastWarning = ISINT(lastWarningRef) ? (ULong)RVALUE(lastWarningRef) : 0;
+			ULong today = (ULong)RealClock() / (60 * 24);		// minutes -> days
 			if (today > lastWarning)
 			{
 				NSCallGlobalFn(SYMA(RecognitionMemoryWarning), MAKEBOOLEAN((gRecInkNotifyFlags & 0x02) == 0));
@@ -1515,10 +1515,10 @@ CStrokeCentral::restoreRecognitionState(OpaqueRef inState)
 		fIsValidStroke = recState->f00;
 		fCurrentStroke = recState->f04;
 		fCurrentUnit = recState->f08;
-		f0C = recState->f0C;
-		f10 = recState->f10;
+		f0C = (int)recState->f0C;
+		f10 = (int)recState->f10;
 		f20 = recState->f14;
-		f24 = recState->f18;
+		f24 = (ArrayIndex)recState->f18;
 		f28 = recState->f1C;
 		f2C = recState->f20;
 		f34 = recState->f28;
@@ -1653,7 +1653,7 @@ BuildRCProto(CView * inView, RefArg inConfig)
 		ULong maskBits = 0x0A00;
 		RefVar baseInputMask(GetProtoVariable(recConfig, SYMA(baseInputMask)));
 		if (NOTNIL(baseInputMask))
-			maskBits = RINT(baseInputMask);
+			maskBits = (ULong)RINT(baseInputMask);
 		inputMask = MAKEINT(BuildInputMask(recConfig, maskBits, false));
 	}
 	SetFrameSlot(recConfig, SYMA(inputMask), inputMask);

@@ -119,7 +119,7 @@ GetRealTimeClock(void)
 	} while (time1 != time2);
 	return time1;
 #else
-	return time(NULL);
+	return (ULong)time(NULL);
 #endif
 }
 
@@ -1101,7 +1101,7 @@ RealTimeClockDispatch(void)
 		break;
 
 	case kSetAlarmHandler:
-		err = CRealTimeClock::setAlarm(msg->name, msg->time, msg->handler, msg->obj, msg->isWakeUp, msg->isRelative);
+		err = CRealTimeClock::setAlarm(msg->name, (ULong)msg->time, msg->handler, msg->obj, msg->isWakeUp, msg->isRelative);
 		break;
 
 	case kClearAlarm:

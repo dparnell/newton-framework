@@ -361,7 +361,7 @@ CForkWorld::acquireMutex(void)
 {
 	long result = fMutex->acquire(kWaitOnBlock);
 	forkSwitch(true);
-	return result;
+	return (NewtonErr)result;
 }
 
 
@@ -378,7 +378,7 @@ CForkWorld::releaseMutex(void)
 	long result = fMutex->release();
 	if (result == kOSErrSemaphoreWouldCauseBlock)
 		result = noErr;
-	return result;
+	return (NewtonErr)result;
 }
 
 #pragma mark -

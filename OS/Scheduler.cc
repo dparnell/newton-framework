@@ -90,7 +90,7 @@ Scheduler(void)
 			gCurrentMemCountTask->fHandlesUsed += (gHandlesUsed - gSavedHandlesUsed);
 			memUsed = gCurrentMemCountTask->fPtrsUsed + gCurrentMemCountTask->fHandlesUsed;
 			if (memUsed > gCurrentMemCountTask->fMemUsed)	// actually looks like <, but whereÕs the sense in that?
-				gCurrentMemCountTask->fMemUsed = memUsed;
+				gCurrentMemCountTask->fMemUsed = (ArrayIndex)memUsed;
 		}
 		gSavedHandlesUsed = gHandlesUsed;
 		gSavedPtrsUsed = gPtrsUsed;

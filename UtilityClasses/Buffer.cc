@@ -179,7 +179,7 @@ CShadowBufferSegment::atEOF(void)
 long
 CShadowBufferSegment::hide(long inCount, int inDirection)
 {
-	long result;
+	long result = 0;
 
 	if (inCount == 0)
 		result = 0;

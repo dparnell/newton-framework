@@ -338,8 +338,8 @@ CCircleBuf::copyOut(UByte * outBuf, ArrayIndex * ioSize, ULong * outArg3)
 		}
 		*ioSize -= amtToCopy;
 
-		ArrayIndex amtCopied;
-		ArrayIndex spaceAfter = fBufLen - fGetIndex;
+		ArrayIndex amtCopied = 0;
+		ArrayIndex spaceAfter = (ArrayIndex)fBufLen - fGetIndex;
 		UByte * p = fBuf + fGetIndex;
 		if (amtToCopy <= spaceAfter)
 			memmove(outBuf, p, amtToCopy);

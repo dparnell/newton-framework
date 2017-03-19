@@ -386,7 +386,7 @@ CNewInternalFlash::avoidConflictWithRExInIOSpace(bool * outBank)
 NewtonErr
 CNewInternalFlash::configureFlashBank(VAddr& ioBankAddr, VAddr& inROAddr, VAddr& inRWAddr)
 {
-	NewtonErr err;
+	NewtonErr err = 0;
 
 	if (f54)
 		// we’re using the MMU -- map the address
@@ -425,7 +425,7 @@ CNewInternalFlash::configureFlashBank(VAddr& ioBankAddr, VAddr& inROAddr, VAddr&
 NewtonErr
 CNewInternalFlash::configureIOBank(VAddr& ioBankAddr, VAddr& inROAddr, VAddr& inRWAddr)
 {
-	NewtonErr err;
+	NewtonErr err = 0;
 
 	if (f54)
 		// we’re using the MMU -- map the address

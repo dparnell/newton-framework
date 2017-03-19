@@ -76,5 +76,5 @@ CDragInfo::setItemView(long, CView *)
 
 CView *
 CDragInfo::getItemView(long) const
-{}
+{ return NULL; }
 

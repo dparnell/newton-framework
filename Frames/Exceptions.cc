@@ -235,7 +235,7 @@ GetExceptionErr(Exception * inException)
 	{
 		RefVar	excData = *(RefVar *)inException->data;
 		if (IsFrame(excData))
-			err = RINT(GetFrameSlot(excData, SYMA(errorCode)));
+			err = (NewtonErr)RINT(GetFrameSlot(excData, SYMA(errorCode)));
 	}
 	else if (!Subexception(inException->name, exMessage))
 	{
@@ -633,7 +633,7 @@ FramesException(Exception * inException)
 		RefVar excData = *(RefVar *)inException->data;
 		if (IsFrame(excData)
 		&&  FrameHasSlot(excData, SYMA(errorCode)))
-			err = RINT(GetFrameSlot(excData, SYMA(errorCode)));
+			err = (NewtonErr)RINT(GetFrameSlot(excData, SYMA(errorCode)));
 	}
 	else
 		err = (NewtonErr)(long)inException->data;

@@ -203,18 +203,18 @@ CNameServer::taskMain(void)
 			switch (request.fCommand)
 			{
 			case kRegisterForSystemEvent:
-				err = registerForSystemEvent(request.fThing, request.fSpec, request.fParam1, request.fParam2);
+				err = registerForSystemEvent((ULong)request.fThing, (ULong)request.fSpec, (ULong)request.fParam1, (ULong)request.fParam2);
 				token.replyRPC(&reply, sizeof(reply), err);
 				break;
 
 			case kUnregisterForSystemEvent:
-				err = unregisterForSystemEvent(request.fThing, request.fSpec);
+				err = unregisterForSystemEvent((ULong)request.fThing, (ULong)request.fSpec);
 				token.replyRPC(&reply, sizeof(reply), err);
 				break;
 
 			case kSendSystemEvent:
 				fSysEventToken = token;
-				err = sendSystemEvent(request.fThing, request.fSpec);
+				err = sendSystemEvent((ULong)request.fThing, (ULong)request.fSpec);
 				if (err == noErr)
 					isReplyWanted = false;
 				token.replyRPC(&reply, sizeof(reply), err);
@@ -931,7 +931,7 @@ CNameServer::gestalt(GestaltSelector inSelector, CUMsgToken * ioToken)
 		reply.system.fMachineType = gHardwareType;
 		reply.system.fROMVersion = gROMVersion;
 		reply.system.fROMStage = gROMStage;
-		reply.system.fRAMSize = InternalRAMInfo(kSystemRAMAlloc);
+		reply.system.fRAMSize = (ULong)InternalRAMInfo(kSystemRAMAlloc);
 
 		NativePixelMap	pixmap;
 		GetGrafInfo(kGrafPixelMap, &pixmap);

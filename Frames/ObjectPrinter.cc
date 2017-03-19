@@ -203,11 +203,11 @@ PrintObjectAux(Ref obj, int indent, int depth)
 					SetArraySlotRef(gPrecedentStack, depth, obj);
 
 				// get print parameters
-				printDepth = RINT(GetFrameSlot(gVarFrame, SYMA(printDepth)));
+				printDepth = (int)RINT(GetFrameSlot(gVarFrame, SYMA(printDepth)));
 				if (printDepth > kPrecedentStackSize-1)
 					printDepth = kPrecedentStackSize-1;
 				prLenRef = GetFrameSlot(gVarFrame, SYMA(printLength));
-				printLength = NOTNIL(prLenRef) ? RINT(prLenRef) : -1;
+				printLength = NOTNIL(prLenRef) ? (int)RINT(prLenRef) : -1;
 				doPrettyPrint = NOTNIL(GetFrameSlot(gVarFrame, SYMA(prettyPrint)));
 				// switch on type of object: slotted (frame/array) or binary
 				flags = ObjectFlags(obj);
@@ -260,15 +260,15 @@ PrintObjectAux(Ref obj, int indent, int depth)
 										REPprintf("#%p", RINT(iter.value()));
 									// Newton Research additions
 									} else if (EQ(tag, SYMA(viewClass)) && ISINT(iter.value())) {
-										PrintViewClass(RVALUE(iter.value()));
+										PrintViewClass((int)RVALUE(iter.value()));
 									} else if (EQ(tag, SYMA(viewFlags)) && ISINT(iter.value())) {
-										PrintViewFlags(RVALUE(iter.value()));
+										PrintViewFlags((int)RVALUE(iter.value()));
 									} else if (EQ(tag, SYMA(viewFormat)) && ISINT(iter.value())) {
-										PrintViewFormat(RVALUE(iter.value()));
+										PrintViewFormat((int)RVALUE(iter.value()));
 									} else if (EQ(tag, SYMA(viewFont)) && ISINT(iter.value())) {
-										PrintViewFont(RVALUE(iter.value()));
+										PrintViewFont((int)RVALUE(iter.value()));
 									} else if (EQ(tag, SYMA(viewJustify)) && ISINT(iter.value())) {
-										PrintViewJustify(RVALUE(iter.value()));
+										PrintViewJustify((int)RVALUE(iter.value()));
 									} else {
 										PrintObjectAux(iter.value(), indent + count, depth);
 									}
@@ -451,7 +451,7 @@ PrintObjectAux(Ref obj, int indent, int depth)
 
 		case kTagMagicPtr:
 /*-- magic pointer --*/
-			REPprintf(GetMagicPointerString(RVALUE(obj)));
+			REPprintf(GetMagicPointerString((int)RVALUE(obj)));
 			break;
 		}
 	}
@@ -496,7 +496,7 @@ void
 SafelyPrintString(UniChar * str)
 {
 	char	buf[256];
-	int	bufLen, len = Ustrlen(str);
+	int	bufLen, len = (int)Ustrlen(str);
 
 	while (len > 0)
 	{
@@ -595,7 +595,7 @@ Stringer(RefArg obj)
 	}
 	if (inkLength > 0)
 	{
-		uint32_t  inkInfo = ((textLength/sizeof(UniChar)) << 4) | 0x01;
+		uint32_t  inkInfo = ((uint32_t)(textLength/sizeof(UniChar)) << 4) | 0x01;
 		inkPtr = (Ptr) lockedObj + strLength;
 		*(uint32_t *)inkPtr = inkInfo;
 	}
@@ -648,7 +648,7 @@ StringerStringObject(RefArg obj, Ptr outText, int * outTextSize, Ptr outInk, int
 		if (value == 0.0)
 		{
 			strPtr = "0.0";
-			strLen = strlen(strPtr);
+			strLen = (int)strlen(strPtr);
 		}
 		else
 		{
@@ -665,7 +665,7 @@ StringerStringObject(RefArg obj, Ptr outText, int * outTextSize, Ptr outInk, int
 	else if (IsSymbol(obj))
 	{
 		const char * sym = SymbolName(obj);
-		int symLen = strlen(sym);
+		int symLen = (int)strlen(sym);
 		*outTextSize = symLen * sizeof(UniChar);
 		*outInkSize = 0;
 		if (outText != NULL)
@@ -1080,7 +1080,7 @@ extern "C" const char * GetMagicPointerString(int inMP);
 void
 PrintMagicPtr(RefArg inObj)
 {
-	REPprintf(GetMagicPointerString(RVALUE(inObj)));
+	REPprintf(GetMagicPointerString((int)RVALUE(inObj)));
 }
 
 

@@ -171,8 +171,8 @@ CStoreObjRef::cloneEmpty(int inState, size_t inSize, CStoreObjRef & inObj, bool 
 NewtonErr
 CStoreObjRef::copyTo(CStoreObjRef & inObj, size_t inOffset, size_t inLen)
 {
-	return fStore->basicCopy(fStore->translate(fObjectAddr + sizeof(StoreObjHeader) + inOffset),
-									 fStore->translate(inObj.fObjectAddr + sizeof(StoreObjHeader) + inOffset),
+	return fStore->basicCopy(fStore->translate(fObjectAddr + sizeof(StoreObjHeader) + (ZAddr)inOffset),
+									 fStore->translate(inObj.fObjectAddr + sizeof(StoreObjHeader) + (ZAddr)inOffset),
 									 inLen);
 }
 
@@ -284,7 +284,7 @@ NewtonErr
 CStoreObjRef::read(void * outBuf, size_t inOffset, size_t inLen)
 {
 PRINTF(("CStoreObjRef::read(offset=%lu, length=%lu)\n", inOffset,inLen));
-	return fStore->basicRead(fStore->translate(fObjectAddr + sizeof(StoreObjHeader) + inOffset), outBuf, inLen);
+	return fStore->basicRead(fStore->translate(fObjectAddr + sizeof(StoreObjHeader) + (ZAddr)inOffset), outBuf, inLen);
 }
 
 
@@ -292,7 +292,7 @@ NewtonErr
 CStoreObjRef::write(void * inBuf, size_t inOffset, size_t inLen)
 {
 PRINTF(("CStoreObjRef::write(offset=%lu, length=%lu)\n", inOffset,inLen));
-	return fStore->basicWrite(fStore->translate(fObjectAddr + sizeof(StoreObjHeader) + inOffset), inBuf, inLen);
+	return fStore->basicWrite(fStore->translate(fObjectAddr + sizeof(StoreObjHeader) + (ZAddr)inOffset), inBuf, inLen);
 }
 
 
@@ -303,7 +303,7 @@ CStoreObjRef::dlete(void)
 	if (dirEntAddr != kIllegalZAddr)
 		fStore->blockForAddr(dirEntAddr)->zapDirEnt(dirEntAddr);
 	fStore->blockForAddr(fObjectAddr)->zapObject(fObjectAddr);
-	fObj.id = kNoPSSId;
+	fObj.id = kNoPSSId >> 4;
 	return noErr;
 }
 

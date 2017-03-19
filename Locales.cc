@@ -170,7 +170,7 @@ PositiveNumberProtoStr(void)
 {
 	if (gPositiveNumProto == NULL)
 	{
-		int			dpStrLen = Ustrlen(GetUString(gLocaleStrCache->decimalPoint));
+		int			dpStrLen = (int)Ustrlen(GetUString(gLocaleStrCache->decimalPoint));
 		UniChar *	str = (UniChar *)calloc(dpStrLen + 5, sizeof(UniChar));
 		if (str != NULL)
 		{
@@ -304,7 +304,7 @@ ROMCacheLocaleAttributes(void)
 	gLocaleStrCache->currencyPrefix = currencyPrefix;
 	gLocaleStrCache->currencySuffix = currencySuffix;
 
-	gNumberGroupWidth = groupWidth;
+	gNumberGroupWidth = (int)groupWidth;
 	gNumberLeadingZero = (groupWidth == 0);
 	if (gPositiveNumProto != NULL)
 	{
@@ -366,13 +366,13 @@ IntlNumberMunge(const char * inStr, UniChar * outStr, bool inIsNegative, ArrayIn
 		size_t		groupSepLen = Ustrlen(groupSep);
 		UniChar *	dstStr = intStr;
 		const char *srcStr = inStr;
-		int			srcLen = intLen;
+		int			srcLen = (int)intLen;
 		size_t		groupWidth = srcLen % gNumberGroupWidth;
 		if (groupWidth == 0)
 			groupWidth = gNumberGroupWidth;
 		while (srcLen > 0)
 		{
-			ConvertToUnicode(srcStr, dstStr, groupWidth);
+			ConvertToUnicode(srcStr, dstStr, (ArrayIndex)groupWidth);
 			srcLen -= groupWidth;
 			srcStr += groupWidth;
 			dstStr += groupWidth;
@@ -386,14 +386,14 @@ IntlNumberMunge(const char * inStr, UniChar * outStr, bool inIsNegative, ArrayIn
 	}
 	else
 	{
-		ConvertToUnicode(inStr, intStr, intLen);
+		ConvertToUnicode(inStr, intStr, (ArrayIndex)intLen);
 		intStr[intLen] = kEndOfString;
 	}
 	if (intLen != srcStrLen)
 	{
 		// there are digits remaining after the integer part - this must be the fraction
 		fracLen = srcStrLen - intLen - 1;
-		ConvertToUnicode(inStr + intLen + 1, fracStr, fracLen);
+		ConvertToUnicode(inStr + intLen + 1, fracStr, (ArrayIndex)fracLen);
 		fracStr[fracLen] = kEndOfString;
 	}
 
@@ -519,12 +519,12 @@ ParamString(UniChar * ioStr, size_t inStrLen, const UniChar * inFmt, ...)
 	}
 	va_end(args);
 
-	int	fmtStrLen = (p - inFmt);	// sp00
+	int	fmtStrLen = (int)(p - inFmt);	// sp00
 	int	index = 0;	// r8
-	int	indexOfParam = paramIndex[index];	// r0
+	int	indexOfParam = (int)paramIndex[index];	// r0
 	int	lenRemaining;	// r4
 	p = inFmt;
-	for (int i = 0, lenRemaining = inStrLen; i < fmtStrLen && lenRemaining > 0; ++i)
+	for (int i = 0, lenRemaining = (int)inStrLen; i < fmtStrLen && lenRemaining > 0; ++i)
 	{
 		if ((ch = *p++) == kEndOfString)
 			break;
@@ -535,7 +535,7 @@ ParamString(UniChar * ioStr, size_t inStrLen, const UniChar * inFmt, ...)
 			UniChar *	pStr = paramPtr[*p++ - '0'];
 			if (pStr != NULL)
 			{
-				pStrLen = Ustrlen(pStr);
+				pStrLen = (int)Ustrlen(pStr);
 				if (pStrLen <= lenRemaining)
 				{
 					Ustrcpy(ioStr, pStr);
@@ -546,7 +546,7 @@ ParamString(UniChar * ioStr, size_t inStrLen, const UniChar * inFmt, ...)
 					Ustrncpy(ioStr, pStr, lenRemaining);
 			}
 			index++;
-			indexOfParam = (index < numOfParams) ? paramIndex[index] : 0;
+			indexOfParam = (index < numOfParams) ? (int)paramIndex[index] : 0;
 		}
 		else
 			*ioStr++ = ch;
@@ -604,7 +604,7 @@ NumberString(double inNum, UniChar * outStr, ArrayIndex inStrLen, const char * i
 					//	sprintf(str, inFmt, inNum);
 						*outStr++ = '-';
 					}
-					ConvertToUnicode(str, outStr, strlen(str));	// look, no inStrLen size check!
+					ConvertToUnicode(str, outStr, (ArrayIndex)strlen(str));	// look, no inStrLen size check!
 					return err;
 				}
 				else if ('0' <= ch && ch <= '9')
@@ -617,7 +617,7 @@ NumberString(double inNum, UniChar * outStr, ArrayIndex inStrLen, const char * i
 				else if (decimalPt != NULL && postamble == NULL)
 				{
 					postamble = s;
-					postambLen = strlen(s);
+					postambLen = (int)strlen(s);
 				}
 				if (srcLen == 0)
 					preambLen++;
@@ -626,7 +626,7 @@ NumberString(double inNum, UniChar * outStr, ArrayIndex inStrLen, const char * i
 //L94
 		//sp-14
 		UniChar *	groupSep = GetUString(gLocaleStrCache->groupSepStr);	// sp10
-		int			groupSepLen = Ustrlen(groupSep);								// sp0C
+		int			groupSepLen = (int)Ustrlen(groupSep);								// sp0C
 		//int			sp08 = gNumberGroupWidth;
 		UniChar *	protoStr;															// sp04
 		if (isNegative)
@@ -638,7 +638,7 @@ NumberString(double inNum, UniChar * outStr, ArrayIndex inStrLen, const char * i
 		int	intLen = srcLen + groupSepLen * (srcLen-1)/gNumberGroupWidth;	// sp04
 		int	fracLen;																			// sp00
 		if (decimalPt != NULL)
-			fracLen = strlen(decimalPt) - postambLen;
+			fracLen = (int)strlen(decimalPt) - postambLen;
 //		else if (sp24 != NULL)
 //			fracLen = strlen(sp24) - postambLen;
 		else
@@ -774,7 +774,7 @@ IntegerString(int inNum, UniChar * outStr)
 
 	// Put it the right way around
 	first = 0;
-	last = Ustrlen(outStr) - 1;
+	last = (int)Ustrlen(outStr) - 1;
 	while (first < last)
 	{
 		ch = outStr[first];
@@ -796,7 +796,7 @@ uitoa(ULong inNum, unsigned char * ioStr)
 
 	unsigned char	ch;
 	int	first = 0;
-	int	last = strlen((const char *)ioStr) - 1;
+	int	last = (int)strlen((const char *)ioStr) - 1;
 	while (first < last)
 	{
 		ch = ioStr[first];
@@ -820,7 +820,7 @@ IntegerStringSpec(long inNum, UniChar * outStr, ArrayIndex inStrLen, ULong inFmt
 	isNegative = (inNum < 0);
 	if (isNegative)
 		inNum = -inNum;
-	uitoa(inNum, str);
+	uitoa((ULong)inNum, str);
 	return IntlNumberMunge((const char *)str, outStr, isNegative, 0, inStrLen, inFmt);
 }
 

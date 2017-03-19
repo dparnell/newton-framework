@@ -183,7 +183,7 @@ CStackManager::fault(ProcessorState * ioState)
 	{
 		CTask *	task;
 		ConvertIdToObj(kTaskType, ioState->f58, &task);
-		r2 = task->fStackTop - fState->f50;
+		r2 = (ULong)(task->fStackTop - fState->f50);
 		if (r2 > task->fTaskDataSize)
 			task->fTaskDataSize = r2;
 	}
@@ -261,7 +261,7 @@ CStackManager::releaseRequest(int inSelector, bool inArg2, ArrayIndex * outNumOf
 	}
 
 	CDoubleQContainer freePages(offsetof(CStackPage, f04));
-	ArrayIndex numOfFreePages = gatherFreePages(freePages, inArg2) + numOfReleasedPages;
+	ArrayIndex numOfFreePages = (ArrayIndex)gatherFreePages(freePages, inArg2) + numOfReleasedPages;
 	if (freePages.peek())
 	{
 		fLock.release();

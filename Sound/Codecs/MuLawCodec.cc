@@ -100,7 +100,7 @@ NewtonErr
 CMuLawCodec::produce(void * outBuf, size_t * ioBufSize, size_t * outComprSize, CodecBlock * ioParms)
 {
 	ArrayIndex sampleSizeInBytes = fDataType / 8;
-	ArrayIndex numOfSamples = *ioBufSize / sampleSizeInBytes;
+	ArrayIndex numOfSamples = (ArrayIndex)*ioBufSize / sampleSizeInBytes;
 
 	*ioBufSize = 0;
 	*outComprSize = 0;
@@ -110,7 +110,7 @@ CMuLawCodec::produce(void * outBuf, size_t * ioBufSize, size_t * outComprSize, C
 
 	UChar * srcPtr = fComprBuffer + fComprBufOffset;
 	short * dstPtr = (short *)outBuf;
-	ArrayIndex available = fComprBufLength - fComprBufOffset;
+	ArrayIndex available = (ArrayIndex)fComprBufLength - fComprBufOffset;
 	if (numOfSamples > available)
 		numOfSamples = available;
 	if (numOfSamples > 0)
@@ -157,7 +157,7 @@ NewtonErr
 CMuLawCodec::consume(const void * inBuf, size_t * ioBufSize, size_t * outComprSize, const CodecBlock * inParms)
 {
 	ArrayIndex sampleSizeInBytes = fDataType / 8;
-	ArrayIndex numOfSamples = *ioBufSize / sampleSizeInBytes;
+	ArrayIndex numOfSamples = (ArrayIndex)*ioBufSize / sampleSizeInBytes;
 
 	*ioBufSize = 0;
 	*outComprSize = 0;
@@ -167,7 +167,7 @@ CMuLawCodec::consume(const void * inBuf, size_t * ioBufSize, size_t * outComprSi
 
 	short * srcPtr = (short *)inBuf;
 	UChar * dstPtr = fComprBuffer + fComprBufOffset;
-	ArrayIndex available = fComprBufLength - fComprBufOffset;
+	ArrayIndex available = (ArrayIndex)fComprBufLength - fComprBufOffset;
 	if (numOfSamples > available)
 		numOfSamples = available;
 	if (numOfSamples > 0)

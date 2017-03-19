@@ -116,7 +116,7 @@ CMemObject::copyFrom(size_t * outSize, Ptr outBuffer, size_t inSize, ULong inOff
 {
 	if (fFlags.internal)
 	{
-		ULong	availableSize = fSize - inOffset;
+		ULong	availableSize = (ULong)fSize - inOffset;
 		if (inSize > availableSize)
 			inSize = availableSize;
 		*outSize = inSize;

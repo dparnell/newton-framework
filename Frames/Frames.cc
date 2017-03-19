@@ -202,7 +202,7 @@ FrameHasPath(RefArg context, RefArg path)
 					pathElement = ((ArrayObject *)ObjectPtr(path))->slot[i];
 					if (ISINT(pathElement))
 					{
-						ArrayIndex pathIndex = RVALUE(pathElement);
+						ArrayIndex pathIndex = (ArrayIndex)RVALUE(pathElement);
 						if (IsArray(current) && pathIndex < ARRAYLENGTH(ObjectPtr(current)))
 							current = ((ArrayObject *)ObjectPtr(current))->slot[pathIndex];
 						else
@@ -347,7 +347,7 @@ FindOffset1(Ref inMap, Ref tag, Ref * outMap)
 		{
 			offset = FindOffset1(map->slot[0], tag, outMap);
 			if (NOTNIL(*outMap))
-				return offset;
+				return (ArrayIndex)offset;
 			depth = kMaxDepth - 1;
 			break;
 		}
@@ -367,7 +367,7 @@ FindOffset1(Ref inMap, Ref tag, Ref * outMap)
 			else
 			{
 				*outMap = MAKEPTR(map);
-				return offset + mapOffset;
+				return (ArrayIndex)offset + mapOffset;
 			}
 		}
 		else
@@ -381,7 +381,7 @@ FindOffset1(Ref inMap, Ref tag, Ref * outMap)
 				||  UnsafeSymbolEqual(slotSym, tag, hash))
 				{
 					*outMap = MAKEPTR(map);
-					return offset;
+					return (ArrayIndex)offset;
 				}
 				offset++;
 			}
@@ -391,7 +391,7 @@ FindOffset1(Ref inMap, Ref tag, Ref * outMap)
 	}
 
 	*outMap = NILREF;
-	return offset;
+	return (ArrayIndex)offset;
 }
 
 
@@ -537,7 +537,7 @@ GetFramePath(RefArg rcvr, RefArg path)
 		{
 			if (IsArray(rcvr))
 			{
-				ArrayIndex	i = RVALUE(path);
+				ArrayIndex	i = (ArrayIndex)RVALUE(path);
 				if (i < ARRAYLENGTH(ObjectPtr(rcvr)))
 					return ((FrameObject *)ObjectPtr(rcvr))->slot[i];
 				else
@@ -561,7 +561,7 @@ GetFramePath(RefArg rcvr, RefArg path)
 					pathElement = ((ArrayObject *)ObjectPtr(path))->slot[i];
 					if (ISINT(pathElement))
 					{
-						ArrayIndex	pathIndex = RVALUE(pathElement);
+						ArrayIndex	pathIndex = (ArrayIndex)RVALUE(pathElement);
 						if (IsArray(current) && pathIndex < ARRAYLENGTH(ObjectPtr(current)))
 							current = ((ArrayObject *)ObjectPtr(current))->slot[pathIndex];
 						else
@@ -1079,7 +1079,7 @@ SetFramePath(RefArg context, RefArg path, RefArg value)
 	{
 		if (!IsArray(context))
 			ThrowExFramesWithBadValue(kNSErrPathFailed, path);
-		SetArraySlot(context, RVALUE(path), value);
+		SetArraySlot(context, (ArrayIndex)RVALUE(path), value);
 	}
 
 	else if (IsArray(path) && EQ(ClassOf(path), SYMA(pathExpr)))
@@ -1100,7 +1100,7 @@ SetFramePath(RefArg context, RefArg path, RefArg value)
 				// path element is array index => current path must be an array
 				if (!IsArray(current))
 					ThrowExFramesWithBadValue(kNSErrPathFailed, path);
-				current = GetArraySlot(current, RVALUE(pathElement));
+				current = GetArraySlot(current, (ArrayIndex)RVALUE(pathElement));
 			}
 			else if (IsSymbol(pathElement))
 			{
@@ -1138,7 +1138,7 @@ SetFramePath(RefArg context, RefArg path, RefArg value)
 			// final path element is array index => final path component must be an array
 			if (!IsArray(current))
 				ThrowExFramesWithBadValue(kNSErrPathFailed, path);
-			SetArraySlot(current, RVALUE(pathElement), value);
+			SetArraySlot(current, (ArrayIndex)RVALUE(pathElement), value);
 		}
 		else
 			// final path element is symbol => final path component must be a frame
@@ -1266,7 +1266,7 @@ FRemoveSlot(RefArg inRcvr, RefArg inObj, RefArg inTag)
 	if ((flags & kObjFrame) != 0)
 		RemoveSlot(inObj, inTag);
 	else
-		ArrayRemoveCount(inObj, RINT(inTag), 1);
+		ArrayRemoveCount(inObj, (ArrayIndex)RINT(inTag), 1);
 
 	return inObj;
 }

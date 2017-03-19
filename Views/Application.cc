@@ -368,7 +368,7 @@ CApplication::addDelayedAction(RefArg inRcvr, RefArg inFunc, RefArg inArg, RefAr
 	{
 		RefVar actionTime(AllocateBinary(SYMA(Time), sizeof(CTime)));
 		CDataPtr timeData(actionTime);
-		*((CTime *)(Ptr)timeData) = TimeFromNow(RINT(inTime) * kMilliseconds);
+		*((CTime *)(Ptr)timeData) = TimeFromNow((Timeout)RINT(inTime) * kMilliseconds);
 		SetArraySlot(fDelayedActions, 3 + index, actionTime);
 	}
 	else
@@ -552,7 +552,7 @@ FHandleUnit(RefArg inRcvr, RefArg inCmd, RefArg inUnit)
 {
 	CResponder * responder = FailGetResponder(inRcvr, RA(NILREF));
 	CUnit * unit = UnitFromRef(inUnit);
-	ULong cmdId = RINT(inCmd);
+	ULong cmdId = (ULong)RINT(inCmd);
 	return MAKEBOOLEAN(gApplication->dispatchCommand(MakeCommand(cmdId, responder, (long)unit)));
 }
 
@@ -573,7 +573,7 @@ FPostCommand(RefArg inRcvr, RefArg inView, RefArg inCmd)
 	if (IsString(inCmd))
 		cmdId = *(ULong *)(char *)CDataPtr(inCmd);
 	else
-		cmdId = RINT(inCmd);
+		cmdId = (ULong)RINT(inCmd);
 	if (cmdId != 0)
 		gApplication->dispatchCommand(MakeCommand(cmdId, responder, 0x08000000));
 	return TRUEREF;
@@ -585,7 +585,7 @@ FPostCommandParam(RefArg inRcvr, RefArg inView, RefArg inCmd, RefArg inArg)
 {
 	CResponder * responder = FailGetResponder(inRcvr, inView);
 	ULong cmdId;
-	if (ISINT(inCmd) && (cmdId = RVALUE(inCmd)) != 0)
+	if (ISINT(inCmd) && (cmdId = (ULong)RVALUE(inCmd)) != 0)
 	{
 		if (ISINT(inArg))
 			gApplication->dispatchCommand(MakeCommand(cmdId, responder, inArg));

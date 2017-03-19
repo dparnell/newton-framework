@@ -139,7 +139,7 @@ BuildDomainsAndHeaps(ObjectId inEnvId)
 				{
 //printf("\nBuildDomainsAndHeaps(%d) -- %c%c%c%c domain heap\n", inEnvId, domain.name() >> 24, domain.name() >> 16, domain.name() >> 8, domain.name());
 					// the domain has a heap - create a domain for the heap
-					XFAIL(err = NewHeapDomain(domain.base() / kSectionSize, domain.size() / kSectionSize, &domainId))
+					XFAIL(err = NewHeapDomain(domain.base() / kSectionSize, (ULong)domain.size() / kSectionSize, &domainId))
 					// add it to our environment
 					XFAIL(err = environment->add(domainId, domain.isReadOnly()/*manager*/, false/*stack*/, false/*heap*/))
 
@@ -746,7 +746,7 @@ CDomain::CDomain()
 
 CDomain::~CDomain()
 {
-	DeregisterFaultMonitorByDomainNumber(fNumber);
+	DeregisterFaultMonitorByDomainNumber((int)fNumber);
 	ClearDomainPrimaryTable(fStart, fLength);
 	gTheMemArchManager->removeDomain(this);
 }

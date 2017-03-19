@@ -404,7 +404,7 @@ CCompiler::parseOperRHS(int inPrecedence, ExprAST * ioLHS)
 	{
 		while (1)
 		{
-			int operPrecedence;
+			int operPrecedence = 0;
 			int oper = theToken.id;
 			switch (oper)
 			{

@@ -66,7 +66,7 @@ enum
 	O b j e c t   T a g   F u n c t i o n s
 ------------------------------------------------------------------------------*/
 
-#define	MAKEINT(i)				(((long) (i)) << kRefTagBits)
+#define	MAKEINT(i)				(((unsigned long) (i)) << kRefTagBits)
 #define	MAKEIMMED(t, v)		((((((long) (v)) << kRefImmedBits) | ((long) (t))) << kRefTagBits) | kTagImmed)
 #define	MAKECHAR(c)				MAKEIMMED(kImmedChar, (unsigned) c)
 #define	MAKEBOOLEAN(b)			(b ? TRUEREF : FALSEREF)

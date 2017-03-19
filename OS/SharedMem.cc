@@ -441,7 +441,7 @@ SMemMsgMsgDoneKernelGlue(ObjectId inMsgId, long inResult, ULong inSignature)
 		XFAILIF(msg->fSignature != inSignature, err = kOSErrBadSignature;)
 		XFAILIF(msg->f80.fContainer == NULL, err = kOSErrMsgDoneNotExpected;)
 		msg->f80.fContainer->deleteFromQueue(msg);
-		msg->completeSender(inResult);
+		msg->completeSender((NewtonErr)inResult);
 	}
 	XENDTRY;
 	return err;

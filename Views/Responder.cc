@@ -50,7 +50,7 @@ CommandSetId(RefArg inCmd, ULong inId)
 ULong
 CommandId(RefArg inCmd)
 {
-	return RINT(GetFrameSlot(inCmd, SYMA(id)));
+	return (ULong)RINT(GetFrameSlot(inCmd, SYMA(id)));
 }
 
 
@@ -153,7 +153,7 @@ CommandIndexParameter(RefArg inCmd, ArrayIndex index)
 	RefVar	params(GetFrameSlot(inCmd, SYMA(params)));
 	if (ISNIL(params) || Length(params) < index + 1)
 		return 0;
-	return RINT(GetArraySlot(params, index));
+	return (int)RINT(GetArraySlot(params, index));
 }
 
 
@@ -216,5 +216,5 @@ CommandSetResult(RefArg inCmd, NewtonErr inResult)
 NewtonErr
 CommandResult(RefArg inCmd)
 {
-	return RINT(GetFrameSlot(inCmd, SYMA(result)));
+	return (int)RINT(GetFrameSlot(inCmd, SYMA(result)));
 }
